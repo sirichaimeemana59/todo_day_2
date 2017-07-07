@@ -28,12 +28,20 @@
                         <td>ยังไม่ได้ทำ</td>
                         {{--<td>{{$todo->status}}</td>--}}
                     @else
-                        <td>ยทำเสร็จแล้ว</td>
+                        <td>ทำเสร็จแล้ว</td>
                     @endif
                     <td>
+
+                        @if($todo->status == 0)
+                            <a href="/toggle/{{$todo->id}}/1" class="btn btn-success btn-xs">Fail</a>
+                        @else
+                            <a href="/toggle/{{$todo->id}}/0" class="btn btn-danger btn-xs">Finish</a>
+                        @endif
+
                         <a href="/edit/{{$todo->id}}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>
                         <a href="/delete/{{$todo->id}}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>
-                        {{--การทำ Link พร้อมส่งค่า id --}}
+
+                        {{--การทำ Link พร้อมส่งค่า id--}}
                         {{--<a href="/edit/{{$todo->id}}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>--}}
                         {{--<a href="/delete/{{$todo->id}}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>--}}
                     </td>
@@ -42,11 +50,12 @@
             </tbody>
         </table>
     </div>
-    <ul class="pagination">
-        <li><a href="#">1</a></li>
-        <li class="active"><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-    </ul>
+    {{$todos->links()}}
+    {{--<ul class="pagination">--}}
+        {{--<li><a href="#">1</a></li>--}}
+        {{--<li class="active"><a href="#">2</a></li>--}}
+        {{--<li><a href="#">3</a></li>--}}
+        {{--<li><a href="#">4</a></li>--}}
+        {{--<li><a href="#">5</a></li>--}}
+    {{--</ul>--}}
 @endsection()

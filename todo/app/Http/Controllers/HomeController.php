@@ -10,12 +10,25 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $todos = Todo::all();
+//        $todos = Todo::where('name','หมอ')->get(); การ select
+//            $todos = Todo::orderBy('id', 'desc')->get();
+        $todos = Todo::paginate(5);
         $data = [
             'todos' => $todos//ต้องเหมือนกันทั้ง 2 ค่า 'todos' => $todos
         ];
-        return view('index',$data);
+        return view('index', $data);
     }
+
+    public function toggle($id,$status){
+
+        $todo = Todo::findOrFail($id);
+
+        $todo->status = $status;
+        $todo->save();
+        return redirect('/');
+    }
+
+
 
     public function create()
     {
@@ -34,7 +47,7 @@ class HomeController extends Controller
             'category_id' => 'required'
             //แจ้งข้อความแจ้งเตือนเวลาไม่ได้กรอกข้อมูล
         ];
-        $this->validate($request,$rules);//ส่งค่าเข้าไปและถาม
+        $this->validate($request, $rules);//ส่งค่าเข้าไปและถาม
         $todo = new Todo();
         $todo->name = $request->input('name');
         $todo->category_id = $request->input('category_id');
@@ -58,9 +71,9 @@ class HomeController extends Controller
         $todo = Todo::findOrFail($id);
         $data = [
             'categories' => categories::all(),
-            'todo'=> $todo
+            'todo' => $todo
         ];
-        return view('edit',$data);
+        return view('edit', $data);
     }
 
     public function update(Request $request, $id)
@@ -70,12 +83,18 @@ class HomeController extends Controller
             'category_id' => 'required'
             //แจ้งข้อความแจ้งเตือนเวลาไม่ได้กรอกข้อมูล
         ];
-        $this->validate($request,$rules);//ส่งค่าเข้าไปและถาม
+        $this->validate($request, $rules);//ส่งค่าเข้าไปและถาม
         //dd($request->all());
         $todo = Todo::findOrFail($id);
         $todo->name = $request->input('name');
         $todo->category_id = $request->input('category_id');
         $todo->save();
+        return redirect('/');
+    }
+    public function delete($id)
+    {
+        $todo = Todo::find($id);
+        $todo->delete($id);
         return redirect('/');
     }
 
