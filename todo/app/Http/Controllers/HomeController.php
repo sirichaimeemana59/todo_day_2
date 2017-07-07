@@ -10,7 +10,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $todos = Todo::all();
+        $data = [
+            'todos' => $todos//ต้องเหมือนกันทั้ง 2 ค่า 'todos' => $todos
+        ];
+        return view('index',$data);
     }
 
     public function create()
@@ -20,15 +24,25 @@ class HomeController extends Controller
         ];
         return view('create', $data);
     }
-    public function store(Request $request){
+
+    public function store(Request $request)
+    {
         //dd($request->all());
+
+        $rules = [
+            'name' => 'required|min:3',
+            'category_id' => 'required'
+            //แจ้งข้อความแจ้งเตือนเวลาไม่ได้กรอกข้อมูล
+        ];
+        $this->validate($request,$rules);//ส่งค่าเข้าไปและถาม
         $todo = new Todo();
         $todo->name = $request->input('name');
         $todo->category_id = $request->input('category_id');
         $todo->save();
 
+
 ///////////////////////////////////////////////////////////////
-        //รับค่าที่ส่งมาจากฟอร์ม
+        //รับค่าที่ส่งมาจากฟอร์ม ลงในฐานข้อมูล
 //        $todo = new Todo();
 //        $todo->name = $request->input('name');
 //        $todo->category_id = $request->input('category_id');
@@ -38,12 +52,14 @@ class HomeController extends Controller
         return redirect('/');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         //
         return view('edit');
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         //
         return redirect('/');
     }
