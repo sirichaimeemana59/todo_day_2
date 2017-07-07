@@ -23,11 +23,19 @@
                 <tr>
                     <td>{{$todo->id}}</td>
                     <td>{{$todo->name}}</td>
-                    <td>{{$todo->category_id}}</td>
-                    <td>Incomplete</td>
+                    <td>{{$todo->category->name}}</td>
+                    @if($todo->status == 0)
+                        <td>ยังไม่ได้ทำ</td>
+                        {{--<td>{{$todo->status}}</td>--}}
+                    @else
+                        <td>ยทำเสร็จแล้ว</td>
+                    @endif
                     <td>
-                        <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>
-                        <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>
+                        <a href="/edit/{{$todo->id}}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>
+                        <a href="/delete/{{$todo->id}}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>
+                        {{--การทำ Link พร้อมส่งค่า id --}}
+                        {{--<a href="/edit/{{$todo->id}}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> edit</a>--}}
+                        {{--<a href="/delete/{{$todo->id}}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> delete</a>--}}
                     </td>
                 </tr>
             @endforeach

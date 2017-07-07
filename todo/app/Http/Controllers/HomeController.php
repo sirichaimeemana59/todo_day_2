@@ -38,6 +38,7 @@ class HomeController extends Controller
         $todo = new Todo();
         $todo->name = $request->input('name');
         $todo->category_id = $request->input('category_id');
+        $todo->status = 0;
         $todo->save();
 
 
@@ -54,13 +55,27 @@ class HomeController extends Controller
 
     public function edit($id)
     {
-        //
-        return view('edit');
+        $todo = Todo::findOrFail($id);
+        $data = [
+            'categories' => categories::all(),
+            'todo'=> $todo
+        ];
+        return view('edit',$data);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'name' => 'required|min:3',
+            'category_id' => 'required'
+            //แจ้งข้อความแจ้งเตือนเวลาไม่ได้กรอกข้อมูล
+        ];
+        $this->validate($request,$rules);//ส่งค่าเข้าไปและถาม
+        //dd($request->all());
+        $todo = Todo::findOrFail($id);
+        $todo->name = $request->input('name');
+        $todo->category_id = $request->input('category_id');
+        $todo->save();
         return redirect('/');
     }
 

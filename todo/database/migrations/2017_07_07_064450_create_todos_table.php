@@ -17,6 +17,7 @@ class CreateTodosTable extends Migration
             $table->increments('id');
             $table->integer('category_id');
             $table->string('name', 255);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }
